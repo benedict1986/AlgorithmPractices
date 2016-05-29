@@ -1,0 +1,59 @@
+public class Bag<T> implements Iterator<T>
+{
+    public int size;
+    public Node first;
+
+    private class Node
+    {
+        private T item;
+        private Node next;
+
+        public Node(T item)
+        {
+            this.item = item;
+        }
+    }
+
+    public int size()
+    {
+        return size;
+    }
+
+    public boolean isEmpty()
+    {
+        return first == null;
+    }
+
+    public void put(T item)
+    {
+        if (isEmpty())
+        {
+            first = new Node(item);
+        }
+        else
+        {
+            Node oldFirst = first;
+            first = first.next;
+            first = new Node(item);
+            first.next = oldFirst;
+        }
+    }
+
+    public Iterable<T> iterator()
+    {
+        return new BagIterator();
+    }
+
+    public class BagIterator<T> implements Iterator<T>
+    {
+        public Node current = first;
+        public boolean hasNext() { return current.next != null };
+        public void remove() {}
+        public Node next() 
+        {
+            T item = current.item;
+            current = current.next;
+            return item; 
+        }
+    }
+}
